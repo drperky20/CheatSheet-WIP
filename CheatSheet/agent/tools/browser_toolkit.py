@@ -7,8 +7,11 @@ from datetime import datetime
 import logging
 
 # Import MCP components
-from ..browser_mcp.manager import browser_manager
-from ..browser_mcp.client import BrowserMCPClient
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from browser_mcp.manager import browser_manager
+from browser_mcp.client import BrowserMCPClient
 
 logger = logging.getLogger(__name__)
 

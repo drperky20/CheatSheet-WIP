@@ -1,6 +1,6 @@
 "use client";
 
-import { CopilotSidebar } from "@copilotkit/react-ui";
+// import { CopilotSidebar } from "@copilotkit/react-ui"; // Not used in this redirect-only component
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
