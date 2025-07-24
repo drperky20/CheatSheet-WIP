@@ -1,0 +1,1 @@
+"""Browser MCP integration for CheatSheet agent"""

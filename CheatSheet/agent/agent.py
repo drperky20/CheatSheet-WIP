@@ -1,10 +1,10 @@
 """
-This is the main entry point for the agent.
-It defines the workflow graph, state, tools, nodes and edges.
+CheatSheet Academic Agent - Main entry point.
+Defines the workflow graph, state, tools, nodes and edges for academic task automation.
 """
 
 import os
-from typing import Any, List
+from typing import Any, List, Dict, Optional
 from typing_extensions import Literal
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, BaseMessage
@@ -16,53 +16,69 @@ from langgraph.graph import MessagesState
 from langgraph.prebuilt import ToolNode
 from dotenv import load_dotenv
 
+# Import academic tools
+from tools.canvas_tool import canvas_lms_tool, analyze_assignment_requirements
+from tools.browser_toolkit import BrowserToolkit
+
 # Load environment variables from root .env file
 load_dotenv(dotenv_path="../.env")
 
-class AgentState(MessagesState):
-    """
-    Here we define the state of the agent
+# Initialize browser toolkit
+browser_toolkit = BrowserToolkit()
 
-    In this instance, we're inheriting from CopilotKitState, which will bring in
-    the CopilotKitState fields. We're also adding a custom field, `language`,
-    which will be used to set the language of the agent.
+class CheatSheetAgentState(MessagesState):
     """
-    proverbs: List[str] = []
-    tools: List[Any]
-    # your_custom_agent_state: str = ""
-
-@tool
-def get_weather(location: str):
+    State for academic task automation.
+    Manages Canvas context, browser sessions, and task progress.
     """
-    Get the weather for a given location.
-    """
-    return f"The weather for {location} is 70 degrees."
+    # Canvas context
+    canvas_assignment_id: Optional[str] = None
+    canvas_course_id: Optional[str] = None
+    assignment_details: Dict[str, Any] = {}
+    
+    # Browser session
+    browser_session_id: Optional[str] = None
+    browser_active: bool = False
+    current_url: Optional[str] = None
+    
+    # Task progress
+    task_type: str = ""  # research, quiz, essay, form
+    task_status: str = "initializing"
+    completion_percentage: int = 0
+    
+    # Document generation
+    document_content: str = ""
+    document_type: str = ""  # essay, report, answers
+    
+    # Error handling
+    error_count: int = 0
+    last_error: Optional[str] = None
+    
+    # Tools from CopilotKit UI
+    tools: List[Any] = []
 
-# @tool
-# def your_tool_here(your_arg: str):
-#     """Your tool description here."""
-#     print(f"Your tool logic here")
-#     return "Your tool response here."
-
+# Academic tools for the agent
 backend_tools = [
-    get_weather
-    # your_tool_here
+    canvas_lms_tool,
+    analyze_assignment_requirements,
+    browser_toolkit.navigate,
+    browser_toolkit.click,
+    browser_toolkit.type_text,
+    browser_toolkit.get_page_content,
+    browser_toolkit.extract_structured_data,
+    browser_toolkit.take_screenshot,
+    browser_toolkit.fill_form,
+    browser_toolkit.wait_for_element,
 ]
 
 # Extract tool names from backend_tools for comparison
 backend_tool_names = [tool.name for tool in backend_tools]
 
 
-async def chat_node(state: AgentState, config: RunnableConfig) -> Command[Literal["tool_node", "__end__"]]:
+async def chat_node(state: CheatSheetAgentState, config: RunnableConfig) -> Command[Literal["tool_node", "__end__"]]:
     """
-    Standard chat node based on the ReAct design pattern. It handles:
-    - The model to use (and binds in CopilotKit actions and the tools defined above)
-    - The system prompt
-    - Getting a response from the model
-    - Handling tool calls
-
-    For more about the ReAct design pattern, see:
-    https://www.perplexity.ai/search/react-agents-NcXLQhreS0WDzpVaS4m9Cg
+    Academic agent chat node implementing the ReAct design pattern.
+    Handles Canvas LMS integration, browser automation, and academic task completion.
     """
 
     # 1. Define the model using OpenRouter with Qwen
@@ -75,20 +91,49 @@ async def chat_node(state: AgentState, config: RunnableConfig) -> Command[Litera
     # 2. Bind the tools to the model
     model_with_tools = model.bind_tools(
         [
-            *state.get("tools", []), # bind tools defined by ag-ui
+            *state.get("tools", []), # bind tools defined by CopilotKit UI
             *backend_tools,
-            # your_tool_here
         ],
-
-        # 2.1 Disable parallel tool calls to avoid race conditions,
-        #     enable this for faster performance if you want to manage
-        #     the complexity of running tool calls in parallel.
-        parallel_tool_calls=False,
+        parallel_tool_calls=False,  # Disable for safer execution
     )
 
-    # 3. Define the system message by which the chat model will be run
+    # 3. Build context-aware system message
+    context_parts = []
+    
+    if state.get("canvas_assignment_id"):
+        context_parts.append(f"Canvas Assignment ID: {state.canvas_assignment_id}")
+    
+    if state.get("assignment_details"):
+        context_parts.append(f"Assignment: {state.assignment_details.get('name', 'Unknown')}")
+        if 'type' in state.assignment_details:
+            context_parts.append(f"Type: {state.assignment_details['type']}")
+        if 'word_count' in state.assignment_details:
+            context_parts.append(f"Required words: {state.assignment_details['word_count']}")
+    
+    if state.get("browser_session_id"):
+        context_parts.append(f"Browser session active: {state.browser_session_id}")
+    
+    if state.get("task_type"):
+        context_parts.append(f"Current task: {state.task_type}")
+    
+    context_str = "\n".join(context_parts) if context_parts else "No specific context"
+    
     system_message = SystemMessage(
-        content=f"You are a helpful assistant powered by Qwen. The current proverbs are {state.get('proverbs', [])}."
+        content=f"""You are an advanced academic assistant specialized in helping students complete academic tasks.
+        
+Current Context:
+{context_str}
+
+Your capabilities include:
+- Canvas LMS integration for assignment retrieval and submission
+- Browser automation for research and form filling
+- Document generation for essays, reports, and responses
+- Intelligent task completion with academic integrity
+
+Task Status: {state.get('task_status', 'initializing')}
+Progress: {state.get('completion_percentage', 0)}%
+
+Always maintain academic standards and produce high-quality, original work."""
     )
 
     # 4. Run the model to generate a response
@@ -129,10 +174,24 @@ def route_to_tool_node(response: BaseMessage):
     return False
 
 # Define the workflow graph
-workflow = StateGraph(AgentState)
+workflow = StateGraph(CheatSheetAgentState)
 workflow.add_node("chat_node", chat_node)
 workflow.add_node("tool_node", ToolNode(tools=backend_tools))
 workflow.add_edge("tool_node", "chat_node")
 workflow.set_entry_point("chat_node")
 
 graph = workflow.compile()
+
+# FastAPI integration
+if __name__ == "__main__":
+    import uvicorn
+    from api.main import app
+    
+    # Run the FastAPI server
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        log_level="info"
+    )
