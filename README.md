@@ -56,9 +56,10 @@ cd CheatSheet
 npm install  # This also installs Python dependencies
 ```
 
-2. The OpenRouter API key is already configured in `CheatSheet/agent/.env`:
-```
-OPENROUTER_API_KEY=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
+2. Copy and configure the environment file:
+```bash
+cp .env.example .env
+# Edit .env and add your OpenRouter API key
 ```
 
 3. Start development servers:
@@ -75,7 +76,7 @@ This app is configured to use **Qwen 3 235B** (qwen/qwen3-235b-a22b-07-25) via O
 - **Model**: Qwen 3 235B - A powerful open-source model
 - **Provider**: OpenRouter - Unified API for multiple LLMs
 - **Configuration**: `CheatSheet/agent/agent.py:69-73`
-- **Environment**: `CheatSheet/agent/.env`
+- **Environment**: `.env` (project root)
 
 To change the model, edit the `model` parameter in `CheatSheet/agent/agent.py`:
 ```python

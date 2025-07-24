@@ -65,16 +65,17 @@ main() {
     echo "   Python: $(python3 --version)"
     echo "   Working Directory: $(pwd)"
     
-    # Check if .env file exists and has the required key
+    # Check if .env file exists and has the required key (before cd to CheatSheet)
     log "🔑 Checking OpenRouter API configuration..."
-    if [ ! -f "agent/.env" ]; then
-        log_error "agent/.env file not found!"
+    if [ ! -f "../.env" ]; then
+        log_error ".env file not found in project root!"
+        log "Please copy .env.example to .env and add your API keys"
         exit 1
     fi
     
-    if ! grep -q "OPENROUTER_API_KEY=sk-or" agent/.env; then
+    if ! grep -q "OPENROUTER_API_KEY=" ../.env; then
         log_warning "OpenRouter API key may not be configured properly"
-        log "Please ensure agent/.env contains: OPENROUTER_API_KEY=your-key-here"
+        log "Please ensure .env contains: OPENROUTER_API_KEY=your-key-here"
     else
         log_success "OpenRouter API key configured"
     fi

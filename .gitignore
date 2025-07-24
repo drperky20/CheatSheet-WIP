@@ -1,0 +1,280 @@
+# AG-UI CheatSheet - Comprehensive .gitignore
+# ============================================
+
+# Environment Variables & Secrets
+# -------------------------------
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+config/secrets.*
+
+# Node.js & npm
+# -------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Next.js
+# -------
+.next/
+.turbo/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+# ------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+# --------------------
+.venv/
+venv/
+ENV/
+env/
+.env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDEs & Editors
+# --------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+.vim/
+.emacs.d/
+
+# Logs & Debugging
+# ----------------
+logs/
+*.log
+log/
+debug.log
+error.log
+combined.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.nyc_output
+coverage/
+*.lcov
+
+# Runtime & Cache
+# ---------------
+.cache/
+.tmp/
+tmp/
+temp/
+.temp/
+*.pid
+*.seed
+*.pid.lock
+
+# Database
+# --------
+*.db
+*.sqlite
+*.sqlite3
+data/
+database/
+db/
+
+# OS Generated Files
+# ------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Backup Files
+# ------------
+*.bak
+*.backup
+*.swp
+*.swo
+*.orig
+*~
+
+# Security & Keys
+# ---------------
+*.private
+*.secret
+auth.json
+credentials.json
+service-account.json
+google-credentials.json
+aws-credentials
+.aws/
+ssh_key*
+id_rsa*
+id_dsa*
+id_ed25519*
+
+# Deployment & Production
+# -----------------------
+.vercel/
+.netlify/
+.firebase/
+.gcp/
+docker-compose.override.yml
+.dockerignore
+Dockerfile.prod
+k8s/
+terraform.tfstate*
+terraform.tfvars
+.terraform/
+
+# Testing
+# -------
+coverage/
+.nyc_output/
+test-results/
+tests/__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+junit.xml
+
+# AI & ML
+# -------
+models/
+checkpoints/
+weights/
+*.h5
+*.pkl
+*.model
+*.onnx
+.wandb/
+
+# Documentation
+# -------------
+docs/_build/
+docs/build/
+site/
+_site/
+
+# Jupyter Notebooks
+# -----------------
+.ipynb_checkpoints/
+*.ipynb
+
+# Local Development
+# -----------------
+.local/
+local/
+dev/
+sandbox/
+playground/
+scratch/
+
+# Archives
+# --------
+*.tar.gz
+*.tar.bz2
+*.rar
+*.zip
+*.7z
+
+# Temporary Files
+# ---------------
+*.tmp
+*.temp
+.tmp/
+temp/
+
+# Application Specific
+# --------------------
+# Add your specific files here as the SaaS grows
+uploads/
+user-data/
+sessions/
+redis-data/
+elasticsearch-data/
+
+# Generated Documentation
+# ------------------------
+typedoc/
+jsdoc/
+api-docs/
+
+# Mobile
+# ------
+*.ap_
+*.aab
+*.apk
+*.ipa
+
+# Monorepo specific (if needed later)
+# -----------------------------------
+lerna-debug.log*
+rush.json
+
+# Performance & Monitoring
+# -------------------------
+.lighthouse/
+bundle-analyzer/
+webpack-bundle-analyzer/
+
+# Storybook
+# ---------
+storybook-static/
+.out/
+
+# Misc
+# ----
+*.tgz
+*.gz
+.yarnrc
+.npmrc
+!.npmrc.example
+.eslintcache
+.stylelintcache
+tsconfig.tsbuildinfo

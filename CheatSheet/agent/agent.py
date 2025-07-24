@@ -16,8 +16,8 @@ from langgraph.graph import MessagesState
 from langgraph.prebuilt import ToolNode
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from root .env file
+load_dotenv(dotenv_path="../.env")
 
 class AgentState(MessagesState):
     """

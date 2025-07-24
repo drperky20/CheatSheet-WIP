@@ -56,18 +56,19 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-REM Check if .env file exists
+REM Check if .env file exists (before cd to CheatSheet)
 echo [%date% %time%] Checking OpenRouter API configuration...
-if not exist "agent\.env" (
-    echo [ERROR] agent\.env file not found!
+if not exist "..\.env" (
+    echo [ERROR] .env file not found in project root!
+    echo Please copy .env.example to .env and add your API keys
     pause
     exit /b 1
 )
 
-findstr /C:"OPENROUTER_API_KEY=sk-or" agent\.env >nul
+findstr /C:"OPENROUTER_API_KEY=" ..\.env >nul
 if %errorlevel% neq 0 (
     echo [WARNING] OpenRouter API key may not be configured properly
-    echo Please ensure agent\.env contains: OPENROUTER_API_KEY=your-key-here
+    echo Please ensure .env contains: OPENROUTER_API_KEY=your-key-here
 ) else (
     echo [SUCCESS] OpenRouter API key configured
 )
