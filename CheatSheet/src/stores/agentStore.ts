@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { agentService, realtimeService, type AgentSession, type AgentMessage } from '@/lib/supabase/services';
+import { API_CONFIG } from '@/lib/config';
 
 // Use imported types from services
 // interface AgentSession and AgentMessage are now imported
@@ -102,7 +103,7 @@ export const useAgentStore = create<AgentState>()(
         set({ sessionStatus: 'paused' });
         
         // Also pause the backend agent
-        fetch(`/api/v1/agent/pause/${currentSession.id}`, {
+        fetch(`${API_CONFIG.AGENT_BASE_URL}${API_CONFIG.ENDPOINTS.AGENT_PAUSE(currentSession.id)}`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
@@ -122,7 +123,7 @@ export const useAgentStore = create<AgentState>()(
         set({ sessionStatus: 'executing' });
         
         // Also resume the backend agent
-        fetch(`/api/v1/agent/resume/${currentSession.id}`, {
+        fetch(`${API_CONFIG.AGENT_BASE_URL}${API_CONFIG.ENDPOINTS.AGENT_RESUME(currentSession.id)}`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
@@ -141,7 +142,7 @@ export const useAgentStore = create<AgentState>()(
         await agentService.cancelSession(currentSession.id, 'Cancelled by user');
         
         // Also cancel the backend agent
-        fetch(`/api/v1/agent/cancel/${currentSession.id}`, {
+        fetch(`${API_CONFIG.AGENT_BASE_URL}${API_CONFIG.ENDPOINTS.AGENT_CANCEL(currentSession.id)}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
@@ -301,7 +302,7 @@ function subscribeToAgentUpdates(sessionId: string) {
 
   // Also start SSE for backend agent API
   const eventSource = new EventSource(
-    `/api/v1/agent/stream/${sessionId}`,
+    `${API_CONFIG.AGENT_BASE_URL}${API_CONFIG.ENDPOINTS.AGENT_STREAM(sessionId)}`,
     { withCredentials: true }
   );
 
@@ -325,7 +326,7 @@ function subscribeToAgentUpdates(sessionId: string) {
 // Start the backend agent via API
 async function startBackendAgent(sessionId: string, assignmentId: string, taskDescription: string) {
   try {
-    const response = await fetch('/api/v1/agent/invoke', {
+    const response = await fetch(`${API_CONFIG.AGENT_BASE_URL}${API_CONFIG.ENDPOINTS.AGENT_INVOKE}`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',

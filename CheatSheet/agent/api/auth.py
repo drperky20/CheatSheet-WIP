@@ -5,9 +5,18 @@ from typing import Optional
 import os
 import jwt
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
-# In production, this would come from Supabase or another auth service
-SECRET_KEY = os.getenv("JWT_SECRET", "your-secret-key-here")
+# Load environment variables from root directory
+load_dotenv(dotenv_path="../../../.env")
+
+# JWT configuration - requires secure secret in production
+SECRET_KEY = os.getenv("JWT_SECRET")
+if not SECRET_KEY or SECRET_KEY == "your_super_secure_jwt_secret_at_least_32_characters_long":
+    raise ValueError(
+        "JWT_SECRET environment variable is required and must be properly configured. "
+        "Please set a secure 32+ character secret in your .env file."
+    )
 ALGORITHM = "HS256"
 
 async def verify_token(authorization: Optional[str] = Header(None)) -> str:

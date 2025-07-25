@@ -1,51 +1,118 @@
-# AG-UI CheatSheet - Comprehensive .gitignore
-# ============================================
+# CheatSheet - Production-Ready .gitignore
+# =======================================
+# Comprehensive security-focused .gitignore for public GitHub release
 
-# Environment Variables & Secrets
-# -------------------------------
+# ===========================================
+# SECURITY - ENVIRONMENT & SECRETS
+# ===========================================
+
+# Environment files (CRITICAL - Never commit secrets)
 .env
 .env.*
 !.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Secret files and keys
 *.key
 *.pem
 *.p12
 *.pfx
+*.crt
+*.csr
+*.private
+*.secret
+auth.json
+credentials.json
+service-account.json
+google-credentials.json
+aws-credentials
+.aws/
+ssh_key*
+id_rsa*
+id_dsa*
+id_ed25519*
+
+# Sensitive configuration
 secrets/
 config/secrets.*
+.secrets/
 
-# Node.js & npm
-# -------------
+# ===========================================
+# NODE.JS & PACKAGE MANAGERS
+# ===========================================
+
+# Dependencies
 node_modules/
+bower_components/
+
+# Lock files (uncomment the one you don't use)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+# bun.lockb
+
+# Runtime logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
 .npm
 .yarn/
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-bun.lockb
 
-# Next.js
-# -------
+# Optional npm cache directory
+.npm/
+.eslintcache
+.stylelintcache
+
+# ===========================================
+# NEXT.JS & REACT
+# ===========================================
+
+# Next.js build output
 .next/
 .turbo/
 out/
 build/
 dist/
+
+# Next.js cache
+.next/cache/
+.next/standalone/
+.next/static/chunks/
+
+# TypeScript build info
 *.tsbuildinfo
 next-env.d.ts
 
-# Python
-# ------
+# Vercel deployment artifacts
+.vercel/
+
+# ===========================================
+# PYTHON & AI AGENTS
+# ===========================================
+
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Python environments
+.venv/
+venv/
+ENV/
+env/
+.env/
+.conda/
+.pyenv/
+
+# Python distribution / packaging
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -61,130 +128,22 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual Environments
-# --------------------
-.venv/
-venv/
-ENV/
-env/
-.env/
-pip-log.txt
-pip-delete-this-directory.txt
-
-# IDEs & Editors
-# --------------
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
-*.sublime-project
-*.sublime-workspace
-.vim/
-.emacs.d/
-
-# Logs & Debugging
-# ----------------
-logs/
-*.log
-log/
-debug.log
-error.log
-combined.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.nyc_output
-coverage/
-*.lcov
-
-# Runtime & Cache
-# ---------------
-.cache/
-.tmp/
-tmp/
-temp/
-.temp/
-*.pid
-*.seed
-*.pid.lock
-
-# Database
-# --------
-*.db
-*.sqlite
-*.sqlite3
-data/
-database/
-db/
-
-# OS Generated Files
-# ------------------
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-
-# Backup Files
-# ------------
-*.bak
-*.backup
-*.swp
-*.swo
-*.orig
-*~
-
-# Security & Keys
-# ---------------
-*.private
-*.secret
-auth.json
-credentials.json
-service-account.json
-google-credentials.json
-aws-credentials
-.aws/
-ssh_key*
-id_rsa*
-id_dsa*
-id_ed25519*
-
-# Deployment & Production
-# -----------------------
-.vercel/
-.netlify/
-.firebase/
-.gcp/
-docker-compose.override.yml
-.dockerignore
-Dockerfile.prod
-k8s/
-terraform.tfstate*
-terraform.tfvars
-.terraform/
-
-# Testing
-# -------
-coverage/
-.nyc_output/
-test-results/
-tests/__pycache__/
+# Python testing & coverage
 .pytest_cache/
 .coverage
 htmlcov/
 .tox/
 .nox/
-junit.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
 
-# AI & ML
-# -------
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# AI/ML specific
 models/
 checkpoints/
 weights/
@@ -194,87 +153,291 @@ weights/
 *.onnx
 .wandb/
 
-# Documentation
-# -------------
+# ===========================================
+# DEVELOPMENT TOOLS & IDES
+# ===========================================
+
+# Visual Studio Code
+.vscode/
+.history/
+
+# IntelliJ / WebStorm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim/Neovim
+*.swp
+*.swo
+*~
+.vim/
+.netrwhist
+
+# Emacs
+.emacs.d/
+*~
+\#*\#
+.\#*
+
+# ===========================================
+# OPERATING SYSTEMS
+# ===========================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===========================================
+# RUNTIME & TEMPORARY FILES
+# ===========================================
+
+# Logs
+logs/
+*.log
+log/
+debug.log
+error.log
+combined.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.nyc_output/
+
+# Temporary folders
+tmp/
+temp/
+.tmp/
+.temp/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.sass-cache/
+
+# ===========================================
+# DATABASES
+# ===========================================
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+data/
+database/
+db/
+
+# Database dumps
+*.sql
+*.dump
+
+# ===========================================
+# DEPLOYMENT & HOSTING
+# ===========================================
+
+# Vercel
+.vercel/
+
+# Netlify
+.netlify/
+
+# Firebase
+.firebase/
+.firebaserc
+firebase-debug.log
+
+# Google Cloud Platform
+.gcp/
+.gcloud/
+
+# AWS
+.aws/
+.elasticbeanstalk/
+
+# Docker
+.dockerignore
+Dockerfile.prod
+docker-compose.override.yml
+
+# Kubernetes
+k8s/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+.terraform.lock.hcl
+
+# ===========================================
+# TESTING & MONITORING
+# ===========================================
+
+# Test results
+test-results/
+junit.xml
+coverage/
+
+# Lighthouse CI
+.lighthouseci/
+
+# Storybook
+storybook-static/
+.out/
+
+# Bundle analyzer
+bundle-analyzer/
+webpack-bundle-analyzer/
+
+# ===========================================
+# APPLICATION SPECIFIC
+# ===========================================
+
+# CheatSheet specific directories
+uploads/
+user-data/
+sessions/
+browser-sessions/
+canvas-cache/
+
+# Supabase local development
+.supabase/
+
+# LangGraph/LangChain artifacts
+.langchain/
+.langgraph/
+
+# Browser automation data
+playwright-report/
+test-results/
+e2e-results/
+
+# ===========================================
+# ARCHIVES & BACKUPS
+# ===========================================
+
+# Archive files
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tgz
+*.rar
+*.zip
+*.7z
+*.dmg
+*.iso
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# ===========================================
+# DOCUMENTATION & GENERATED FILES
+# ===========================================
+
+# Generated documentation
 docs/_build/
 docs/build/
 site/
 _site/
-
-# Jupyter Notebooks
-# -----------------
-.ipynb_checkpoints/
-*.ipynb
-
-# Local Development
-# -----------------
-.local/
-local/
-dev/
-sandbox/
-playground/
-scratch/
-
-# Archives
-# --------
-*.tar.gz
-*.tar.bz2
-*.rar
-*.zip
-*.7z
-
-# Temporary Files
-# ---------------
-*.tmp
-*.temp
-.tmp/
-temp/
-
-# Application Specific
-# --------------------
-# Add your specific files here as the SaaS grows
-uploads/
-user-data/
-sessions/
-redis-data/
-elasticsearch-data/
-
-# Generated Documentation
-# ------------------------
 typedoc/
 jsdoc/
 api-docs/
 
-# Mobile
-# ------
-*.ap_
-*.aab
-*.apk
-*.ipa
+# Generated types
+types/generated/
+*.d.ts.map
 
-# Monorepo specific (if needed later)
-# -----------------------------------
+# ===========================================
+# MONOREPO SPECIFIC (if needed)
+# ===========================================
+
+# Lerna
 lerna-debug.log*
-rush.json
 
-# Performance & Monitoring
-# -------------------------
-.lighthouse/
-bundle-analyzer/
-webpack-bundle-analyzer/
+# Rush
+common/temp/
+common/deploy/
 
-# Storybook
-# ---------
-storybook-static/
-.out/
+# Yarn workspaces
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
-# Misc
-# ----
-*.tgz
-*.gz
-.yarnrc
-.npmrc
-!.npmrc.example
-.eslintcache
-.stylelintcache
-tsconfig.tsbuildinfo
+# ===========================================
+# PERFORMANCE & PROFILING
+# ===========================================
+
+# Chrome DevTools profiles
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot
+
+# Performance logs
+performance.log
+memory.log
+
+# ===========================================
+# SECURITY SCANNING
+# ===========================================
+
+# Security scan results
+.snyk
+snyk_report/
+audit-results/
+
+# Dependency vulnerability data
+.audit-cache/
+
+# ===========================================
+# CUSTOM RULES
+# ===========================================
+
+# Add your project-specific ignore patterns here
+# Example:
+# /custom-directory/
+# *.custom-extension
+
+# End of .gitignore

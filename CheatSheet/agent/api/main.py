@@ -5,9 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 import os
 from contextlib import asynccontextmanager
+from dotenv import load_dotenv
 
 from .routes import router
 from ..browser_mcp.manager import browser_manager
+
+# Load environment variables from root directory
+load_dotenv(dotenv_path="../../../.env")
 
 # Configure logging
 logging.basicConfig(
@@ -38,13 +42,14 @@ app = FastAPI(
 )
 
 # Configure CORS
+cors_origins = [
+    os.getenv("CORS_ORIGIN", "http://localhost:3000"),
+    os.getenv("NEXT_PUBLIC_SITE_URL", "http://localhost:3000"),
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001",
-        os.getenv("FRONTEND_URL", "http://localhost:3000")
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

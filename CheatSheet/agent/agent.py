@@ -20,8 +20,8 @@ from dotenv import load_dotenv
 from tools.canvas_tool import canvas_lms_tool, analyze_assignment_requirements
 from tools.browser_toolkit import BrowserToolkit
 
-# Load environment variables from parent directory .env file
-load_dotenv(dotenv_path="../.env")
+# Load environment variables from root directory .env file
+load_dotenv(dotenv_path="../../.env")
 
 # Initialize browser toolkit
 browser_toolkit = BrowserToolkit()
