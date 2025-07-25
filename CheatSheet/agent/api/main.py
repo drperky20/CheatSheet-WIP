@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 from .routes import router
 from ..browser_mcp.manager import browser_manager
 
-# Load environment variables from root directory
-load_dotenv(dotenv_path="../../../.env")
+# Load environment variables from project root directory
+load_dotenv(dotenv_path="../../.env")
 
 # Configure logging
 logging.basicConfig(
