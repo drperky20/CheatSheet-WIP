@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { CopilotKit } from "@copilotkit/react-core";
+// import { CopilotKit } from "@copilotkit/react-core"; // Temporarily disabled
 import "./globals.css";
-import "@copilotkit/react-ui/styles.css";
+// import "@copilotkit/react-ui/styles.css"; // Temporarily disabled
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,11 +15,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={"antialiased"}>
-        <CopilotKit runtimeUrl="/api/copilotkit" agent="sample_agent">
+        {/* CopilotKit temporarily disabled during development */}
+        {/* <CopilotKit runtimeUrl="/api/copilotkit" agent="sample_agent"> */}
           {children}
-        </CopilotKit>
+        {/* </CopilotKit> */}
       </body>
     </html>
   );

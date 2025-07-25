@@ -1,26 +1,61 @@
-# CopilotKit <> LangGraph Starter
+# CheatSheet - AI-Powered Academic Workspace
 
-This is a starter template for building AI agents using [LangGraph](https://www.langchain.com/langgraph) and [CopilotKit](https://copilotkit.ai). It provides a modern Next.js application with an integrated LangGraph agent powered by **Qwen 3 235B** via OpenRouter.
+CheatSheet is a comprehensive academic automation platform that combines [LangGraph](https://www.langchain.com/langgraph) AI agents with [CopilotKit](https://copilotkit.ai) for an autonomous academic workspace. It features Canvas LMS integration, real-time browser automation, and intelligent document generation powered by **Qwen 3 235B** via OpenRouter.
+
+## ✨ Features
+
+- 🎯 **Mission-Based Workflow**: Course → Assignment → AI Mission interface
+- 🎨 **Glassmorphism UI**: Modern, responsive design with real-time updates
+- 🤖 **Autonomous AI Agent**: LangGraph-powered agent with browser automation
+- 📚 **Canvas LMS Integration**: Automatic course and assignment synchronization
+- 📝 **Real-time Document Generation**: Live document editing with AI assistance
+- 🔄 **Real-time Communication**: SSE and Supabase real-time for live updates
+- 🛡️ **Enterprise Security**: Row-level security and encrypted credential storage
 
 ## Prerequisites
 
 - Node.js 18+ 
-- Python 3.8+
+- Python 3.12+
+- [Supabase Account](https://supabase.com) (free tier available)
 - Any of the following package managers:
   - [pnpm](https://pnpm.io/installation) (recommended)
   - npm
   - [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
   - [bun](https://bun.sh/)
 - OpenRouter API Key (for the Qwen LangGraph agent) - **Already configured**
+- Canvas LMS credentials (optional, for Canvas integration)
 
 > **Note:** This repository ignores lock files (package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb) to avoid conflicts between different package managers. Each developer should generate their own lock file using their preferred package manager. After that, make sure to delete it from the .gitignore.
 
 ## Getting Started
 
-### Quick Start (Recommended)
+### 🚀 Quick Start (Recommended)
 
-Use the automated start script that handles everything:
+#### 1. Clone and Setup
+```bash
+git clone <repository-url>
+cd CheatSheet
+```
 
+#### 2. Configure Environment
+```bash
+cp .env.example .env
+# Edit .env with your API keys and Supabase credentials
+```
+
+#### 3. Setup Supabase (Automated)
+```bash
+cd CheatSheet/scripts
+./setup-supabase.sh
+```
+This script will:
+- Install Supabase CLI if needed
+- Link to your Supabase project  
+- Apply all database migrations
+- Set up Row Level Security
+- Configure Canvas LMS and agent functions
+
+#### 4. Start Development
 **macOS/Linux:**
 ```bash
 ./start.sh
@@ -107,10 +142,53 @@ The main UI component is in `CheatSheet/src/app/page.tsx`. You can:
 - Add new frontend actions
 - Customize the CopilotKit sidebar appearance
 
+## 🗄️ Database & Backend
+
+CheatSheet uses **Supabase** for its database, authentication, and real-time features:
+
+### Database Features
+- **PostgreSQL** with Row Level Security (RLS)
+- **Canvas LMS Integration** with encrypted credential storage
+- **Agent Session Management** with real-time updates
+- **Chat History** with message threading
+- **User Profiles** with preferences and settings
+
+### Key Functions
+- `sync_canvas_courses()` - Sync Canvas course data
+- `create_agent_session()` - Start new AI missions
+- `add_agent_message()` - Real-time chat messaging
+- `get_user_courses_with_assignments()` - Dashboard data
+
+For detailed setup instructions, see [SUPABASE_SETUP.md](CheatSheet/SUPABASE_SETUP.md).
+
+## 🔧 Environment Variables
+
+Your `.env` file should include:
+
+```env
+# OpenRouter (AI Model)
+OPENROUTER_API_KEY=your_openrouter_api_key
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# JWT for Agent API
+JWT_SECRET=your_jwt_secret_here
+
+# Development
+NODE_ENV=development
+UI_PORT=3000
+AGENT_PORT=8123
+```
+
 ## 📚 Documentation
 
-- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/) - Learn more about LangGraph and its features
+- **[Supabase Setup Guide](CheatSheet/SUPABASE_SETUP.md)** - Complete database setup
+- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/) - Learn more about LangGraph
 - [CopilotKit Documentation](https://docs.copilotkit.ai) - Explore CopilotKit's capabilities
+- [Supabase Documentation](https://supabase.com/docs) - Database and auth features
 - [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API
 - [YFinance Documentation](https://pypi.org/project/yfinance/) - Financial data tools
 
