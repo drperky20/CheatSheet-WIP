@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { MissionWorkspace } from '@/components/mission/MissionWorkspace';
+import { EnhancedMissionWorkspace } from '@/components/mission/EnhancedMissionWorkspace';
 import { createClient } from '@/lib/supabase/client';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { type Assignment } from '@/lib/supabase/services';
@@ -123,7 +123,7 @@ export default function MissionPage() {
 
       {/* Mission Workspace */}
       <main className="h-[calc(100vh-80px)]">
-        <MissionWorkspace 
+        <EnhancedMissionWorkspace 
           assignmentId={assignmentId}
           assignment={assignment}
         />
